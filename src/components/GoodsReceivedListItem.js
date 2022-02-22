@@ -1,5 +1,7 @@
 import React from 'react';
 
+
+
 class PurchaseRequestListItem extends React.Component{
 
     constructor(props){
@@ -47,14 +49,25 @@ class PurchaseRequestListItem extends React.Component{
           <div>Request Date: {this.state.purchaseOrder.date}</div>
           <div>Fiscal Year: {this.state.purchaseOrder.fiscalYear}</div>
         </div>
+
+       
   
         <div>
         <div>Procurement Order #: {this.state.purchaseOrder.poNumber}</div>
           <div>Vendor: {this.state.purchaseOrder.vendor}</div>
           <div>Department: {this.state.purchaseOrder.department}</div>
         </div>
+
+        <div style={{ flexDirection: 'column'}}>
+          <div>Good Received #: {this.state.purchaseOrder.grNumber}</div>
+          <div>Invoice #: {this.state.purchaseOrder.invoiceNumber}</div>
+        </div>
+
+     
+
         </div>
         <br/>
+       
   
         <table width={'100%'} >
         <thead>
