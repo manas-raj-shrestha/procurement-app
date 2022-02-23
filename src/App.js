@@ -23,6 +23,7 @@ export default class App extends React.Component {
   };
 
   render() {
+    
  
     if (!this.state.gapiInitialized) return null;
 

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { fetchPrRequests } from "../../service/gapiManager";
 import { purchaseRequestsFormatted } from "../../SheetProcessor";
-import PurchaseRequestListItem from "../../components/PurchaseRequestListItem";
+import PurchaseRequestListItem from "../home/components/PurchaseRequestListItem";
 
 var initialStatus = {
   loading: true,

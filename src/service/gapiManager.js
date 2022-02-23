@@ -133,11 +133,11 @@ async function fetchOrders() {
     spreadsheetId: fieldId,
     range: "purchase-order!A2:M",
   });
+
   parsePurchaseOrderFromSheets(orders.result.values);
 }
 
-async function fetchSheetData(fieldId) {
-  console.log(fieldId);
+async function fetchGoodsReceived() {
 
   var received = await window.gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: fieldId,
@@ -147,4 +147,4 @@ async function fetchSheetData(fieldId) {
   parseGoodsReceivedFromSheets(received.result.values);
 }
 
-export { initGapis, fetchPrRequests };
+export { initGapis, fetchPrRequests,fetchOrders, fetchGoodsReceived };

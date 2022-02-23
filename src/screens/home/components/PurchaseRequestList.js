@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  purchaseOrdersFormatted,
-  purchaseRequestsFormatted,
-} from "../../../SheetProcessor";
-import PurchaseRequestListItem from "../../../components/PurchaseRequestListItem";
+import { purchaseRequestsFormatted } from "../../../SheetProcessor";
+import PurchaseRequestListItem from "./PurchaseRequestListItem";
 import { fetchPrRequests } from "../../../service/gapiManager";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Button } from "@mui/material";
 var initialStatus = {
   loading: true,
   error: false,
@@ -14,6 +13,7 @@ var initialStatus = {
 
 export default function PurchaseRequestList() {
   const [status, setStatus] = useState(initialStatus);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPrRequests().then(() => {
@@ -30,7 +30,20 @@ export default function PurchaseRequestList() {
       <PurchaseRequestListItem purchaseRequest={element} key={index} />
     );
   });
-  return <div>{purchaseRequestViews}</div>;
+  return (
+    <div>
+      {purchaseRequestViews}
+      <div align="right">
+        <Button
+          variant="contained"
+          style={{ marginRight: 24, marginBottom: 24 }}
+          onClick={() => navigate("/purchase-request")}
+        >
+          Add New
+        </Button>
+      </div>
+    </div>
+  );
 }
 
 function buildLoadingIndicator() {

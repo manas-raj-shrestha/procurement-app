@@ -47,8 +47,7 @@ function parsePurchaseRequestsFromSheets(values) {
       purchaseRequestsFormatted.set(constructedElement.prNo, existingElement);
     }
   });
-  console.log('hererere');
-  console.log(purchaseRequestsFormatted);
+  
   return purchaseRequestsFormatted;
 }
 

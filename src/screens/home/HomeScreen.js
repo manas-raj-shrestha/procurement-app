@@ -1,86 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 
-import {Box, Tabs, Tab ,Typography} from '@mui/material';
-import { Link } from "react-router-dom";
-import {fetchPrRequests} from '../../service/gapiManager';
-import {goodsReceived, purchaseOrdersFormatted, purchaseRequestsFormatted} from '../../SheetProcessor';
-import PurchaseRequestList from './components/PurchaseRequestList';
+import { Box, Tabs, Tab } from "@mui/material";
+
+import GoodsReceivedList from "./components/GoodsReceivedList";
+import PurchaseOrderList from "./components/PurchaseOrdertList";
+
+import PurchaseRequestList from "./components/PurchaseRequestList";
 
 
+export default function HomeScreen() {
+  const [value, setValue] = useState(0);
 
- 
-
-class HomeScreen extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      isLoading: true,
-      goodsReceived: [],
-      purchaseOrders: [],
-      purchaseRequests: [],
-    };
-  }
-
-  initCallback = ()=>{
-    this.setState({
-      purchaseRequests: purchaseRequestsFormatted,
-      isLoading: false,
-    });
-
-    this.setState({
-      purchaseOrders: purchaseOrdersFormatted,
-      isLoading: false,
-    });
-
-    this.setState({
-      goodsReceived: goodsReceived,
-      isLoading: false,
-    });
-  }
-
-  fetchPurchaseRequests() {
-
-    fetchPrRequests().then(()=>{
-      this.setState({
-        purchaseRequests: purchaseRequestsFormatted,
-        isLoading: false,
-      });
-    });
-  
-  }
-
-   handleChange = (event, newValue) => {
- 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
-   handleChangeIndex = (index) => {
-    // setValue(index);
-  };
-
-  componentDidMount() {
-    this.fetchPurchaseRequests();
-  }
-
-  render() {
-    if (this.state.isLoading) {
-      return null;
+  const getComponent = () => {
+    switch (value) {
+      case 0:
+        return <PurchaseRequestList />;
+      case 1:
+        return <PurchaseOrderList/>;
+      case 2:
+        return <GoodsReceivedList/>;
     }
+  };
 
-    return   <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-    <Tabs value={0} onChange={this.handleChange} centered>
-      <Tab label="Purchase Requests" />
-      <Tab label="Purchase Orders" />
-      <Tab label="Goods Received" />
-    </Tabs>
-    <PurchaseRequestList/>
-    <div>ABCD</div>
-
-  </Box>
-
-   
-  }
-
-  
+  return (
+    <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+      <Tabs value={value} onChange={handleChange} centered>
+        <Tab label="Purchase Requests" />
+        <Tab label="Purchase Orders" />
+        <Tab label="Goods Received" />
+      </Tabs>
+      {getComponent()}
+    </Box>
+  );
 }
-
-export default HomeScreen;

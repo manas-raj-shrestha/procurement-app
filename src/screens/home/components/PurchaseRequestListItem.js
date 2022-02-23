@@ -1,6 +1,8 @@
 import React from "react";
+import {Link}from 'react-router-dom';
 import {
   Table,
+  Button,
   TableBody,
   TableCell,
   TableContainer,
@@ -14,14 +16,7 @@ class PurchaseRequestListItem extends React.Component {
     return { name, calories, fat, carbs, protein };
   }
 
-  rows = [
-    this.createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    this.createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    this.createData("Eclair", 262, 16.0, 24, 6.0),
-    this.createData("Cupcake", 305, 3.7, 67, 4.3),
-    this.createData("Gingerbread", 356, 16.0, 49, 3.9),
-  ];
-
+  
   constructor(props) {
     super(props);
 
@@ -39,31 +34,7 @@ class PurchaseRequestListItem extends React.Component {
   }
 
   render() {
-    let tableRows = this.state.purchaseRequest.items.map((element, index) => {
-      return (
-        <tr key={index}>
-          <td width={"5%"} align="center">
-            {element.serialNo}
-          </td>
-
-          <td width={"35%"} align="center">
-            {element.particular}
-          </td>
-
-          <td width={"25%"} align="center">
-            {element.rate}
-          </td>
-
-          <td width={"10%"} align="center">
-            {element.quantity}
-          </td>
-
-          <td width={"25%"} align="center">
-            {element.total}
-          </td>
-        </tr>
-      );
-    });
+   
 
     return (
       <div className="App" style={{ padding: 24, textAlign: "start" }}>
@@ -119,6 +90,8 @@ class PurchaseRequestListItem extends React.Component {
             </TableBody>
           </Table>
         </TableContainer>
+
+       
       </div>
     );
   }
