@@ -4,30 +4,28 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import NewPrRequestScreen from "./screens/NewPrRequestScreen";
 import PurchaseRequest from "./screens/purchase-request/PurchaseRequest";
-import { initGapis } from "./service/gpiManager";
+import { initGapis } from "./service/gapiManager";
 
 export default class App extends React.Component {
-
-constructor(props){
-  super(props);  
-  this.state = {
-    gapiInitialized: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      gapiInitialized: false,
+    };
   }
-}
+  
   componentDidMount() {
-    console.log('Did mount');
+    console.log("Did mount");
     initGapis(this.initializationCallback);
   }
 
   initializationCallback = () => {
-    console.log('set state');
-    this.setState({gapiInitialized: true});
+    this.setState({ gapiInitialized: true });
   };
 
   render() {
-   
-console.log('rendering');
- if (!this.state.gapiInitialized) return null;
+ 
+    if (!this.state.gapiInitialized) return null;
 
     return (
       <BrowserRouter>

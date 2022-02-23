@@ -1,26 +1,52 @@
-import React, { useState } from "react";
-import {useParams} from 'react-router-dom';
-import PurchaseRequestListItem from "../../components/PurchaseRequestListItem";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
+import { fetchPrRequests } from "../../service/gapiManager";
 import { purchaseRequestsFormatted } from "../../SheetProcessor";
-import { CircularProgressbar } from 'react-circular-progressbar';
+import PurchaseRequestListItem from "../../components/PurchaseRequestListItem";
 
+var initialStatus = {
+  loading: true,
+  error: false,
+};
 
-export default function PurchaseRequest(){
-    const { id } = useParams();
-    const {loading, setLoading} = useState(true);
+export default function PurchaseRequest() {
+  const { id } = useParams();
+  const [status, setStatus] = useState(initialStatus);
 
-    //call api
-    window.gapi.client.sheets.spreadsheets.values
-    .get({
-      spreadsheetId: '1Cboc6tEgwCCEuPRDHAPwqTc9SWjVYSkhae0hT_C4Cqo',
-      range: "purchase-request!A2:K",
-    })
-    .then((response) => {
-      var result = response.result;
+  useEffect(
+    () =>
+      {
+        fetchPrRequests().then(() => {
+        setStatus({ ...initialStatus, loading: false });
+      });},
+    []
+  );
 
-    });
+  if (status.loading) buildLoadingIndicator();
 
+  if(purchaseRequestsFormatted.get(id))
 
-    if(loading) return <CircularProgressbar/>
-    // return <PurchaseRequestListItem purchaseRequest={purchaseRequestsFormatted.get(id)}/>
+  return (
+    <PurchaseRequestListItem
+      purchaseRequest={purchaseRequestsFormatted.get(id)}
+    />
+  );
+
+  return <div/>
+}
+
+function buildLoadingIndicator() {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%, -50%)",
+      }}
+    >
+      <CircularProgress />
+    </div>
+  );
 }

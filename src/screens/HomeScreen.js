@@ -5,7 +5,7 @@ import GoodsReceivedListItem from "../components/GoodsReceivedListItem";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { Link } from "react-router-dom";
-import {fetchPrRequests} from '../service/gpiManager';
+import {fetchPrRequests} from '../service/gapiManager';
 import {goodsReceived, purchaseOrdersFormatted, purchaseRequestsFormatted} from '../SheetProcessor';
 
 

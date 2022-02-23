@@ -21,7 +21,7 @@ var initCallback;
 var fieldId;
 
 function initGapis(initializationCallback) {
-    console.log('called');
+    
   initCallback = initializationCallback;
   
   const script = document.createElement("script");
@@ -49,6 +49,7 @@ function onPickerApiLoad ()  {
 };
 
 function onAuthApiLoad ()  {
+  // window.gapi.auth.checkSessionState({client_id:clientId}, (stte)=>{console.log('Callback' +stte)});
   window.gapi.auth.authorize(
     {
       client_id: clientId,
@@ -70,7 +71,7 @@ function handleAuthResult (authResult)  {
 };
 
 function createPicker  ()  {
-  console.log("Create picker " + pickerApiLoaded);
+  
   if (pickerApiLoaded && oauthToken) {
     var view = new window.google.picker.View(
       window.google.picker.ViewId.SPREADSHEETS
@@ -104,9 +105,20 @@ async function fetchPrRequests(){
       spreadsheetId: fieldId,
       range: "purchase-request!A2:K",
     });
+
+   
    
     parsePurchaseRequestsFromSheets(requests.result.values);
-    console.log('called');
+
+}
+
+async function fetchOrders(){
+    var orders = await window.gapi.client.sheets.spreadsheets.values
+    .get({
+      spreadsheetId: fieldId,
+      range: "purchase-order!A2:M",
+    });
+    parsePurchaseOrderFromSheets(orders.result.values);
 }
 
 async function  fetchSheetData(fieldId)  {
@@ -114,12 +126,7 @@ async function  fetchSheetData(fieldId)  {
   
 
 
-    var orders = await window.gapi.client.sheets.spreadsheets.values
-    .get({
-      spreadsheetId: fieldId,
-      range: "purchase-order!A2:M",
-    });
-    parsePurchaseOrderFromSheets(orders.result.values);
+   
 
     var received = await window.gapi.client.sheets.spreadsheets.values
     .get({
