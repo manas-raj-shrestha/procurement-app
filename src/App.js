@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import HomeScreen from "./screens/HomeScreen";
+import HomeScreen from "./screens/home/HomeScreen";
 import NewPrRequestScreen from "./screens/NewPrRequestScreen";
 import PurchaseRequest from "./screens/purchase-request/PurchaseRequest";
 import { initGapis } from "./service/gapiManager";
@@ -13,9 +13,8 @@ export default class App extends React.Component {
       gapiInitialized: false,
     };
   }
-  
+
   componentDidMount() {
-    console.log("Did mount");
     initGapis(this.initializationCallback);
   }
 
