@@ -47,7 +47,7 @@ function parsePurchaseRequestsFromSheets(values) {
       purchaseRequestsFormatted.set(constructedElement.prNo, existingElement);
     }
   });
-
+   
   return purchaseRequestsFormatted;
 }
 
@@ -171,6 +171,8 @@ function parseVendors(workbook) {
 }
 
 export {
+  purchaseOrdersFormatted,
+  goodsReceived,
   purchaseRequestsFormatted,
   parseGoodsReceivedFromSheets,
   parsePurchaseRequestsFromSheets,

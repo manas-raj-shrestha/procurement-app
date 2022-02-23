@@ -73,7 +73,13 @@ class PurchaseRequestListItem extends React.Component{
 
         <div align='right' style={{ marginTop: '16px'}}>Grand Total: {this.getTotalPricing()}</div>
         <div style={{height: 1, backgroundColor:'#d5d5d5', marginTop: '16px'}}></div>
+
+       
       </div>)
+    }
+
+    activateLasers() {
+      
     }
 
 }
