@@ -37,7 +37,7 @@ export default function PurchaseRequestList() {
         <Button
           variant="contained"
           style={{ marginRight: 24, marginBottom: 24 }}
-          onClick={() => navigate("/purchase-request")}
+          onClick={() => navigate("/purchase-request/new")}
         >
           Add New
         </Button>

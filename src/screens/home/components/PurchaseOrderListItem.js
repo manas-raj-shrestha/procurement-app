@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
   Table,
@@ -10,103 +10,78 @@ import {
   Paper,
 } from "@mui/material";
 
-class PurchaseRequestListItem extends React.Component{
+import { useNavigate } from "react-router-dom";
 
-    constructor(props){
-        super(props);
+export default function PurchaseOrderListItem(props){
+  const navigate = useNavigate();
+  const [purchaseOrder, setPurchaseOrder] = useState(props.purchaseOrder);
 
-        this.state = {
-            purchaseOrder : props.purchaseOrder
-        }
-    }
+  const onItemClicked = ()=>{
+    navigate("/purchase-order/"+purchaseOrder.poNumber);
+  }
 
-    render(){
-
-        let tableRows = this.state.purchaseOrder.items.map((element, index)=>{
-
-        return <tr key={index} >
-          <td width={'5%'} align='center'>{element.serialNo}</td>
-        
-          <td width={'25%'} align='center'>{element.particular}</td>
+  return (<div className="App"  onClick={onItemClicked} style={{padding: 24, textAlign: 'start'}}>  
   
-          <td width={'15%'} align='center'>{element.rate}</td>
-  
-          <td width={'10%'} align='center'>{element.quantity}</td>
+  <div style={headerWrapperStyle}>
+  <div style={{display: 'flex', flexDirection: 'column'}}>
+    <div>Procurement Request #: {purchaseOrder.prNo}</div>
+    <div>Request Date: {purchaseOrder.date}</div>
+    <div>Fiscal Year: {purchaseOrder.fiscalYear}</div>
+  </div>
 
-          <td width={'15%'} align='center'>{element.total}</td>
+  <div>
+  <div>Procurement Order #: {purchaseOrder.poNumber}</div>
+    <div>Vendor: {purchaseOrder.vendor}</div>
+    <div>Department: {purchaseOrder.department}</div>
+  </div>
+  </div>
+  <br/>
 
-          <td width={'15%'} align='center'>{element.vatTotal}</td>
+  <TableContainer component={Paper}>
+    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableHead>
+        <TableRow>
+          <TableCell>SerialNo</TableCell>
+          <TableCell>Particular</TableCell>
+          <TableCell>Rate</TableCell>
+          <TableCell>Qty</TableCell>
+          <TableCell>Total</TableCell>
+          <TableCell>VAT Total</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {purchaseOrder.items.map((element, index) => (
+          <TableRow
+            key={index}
+          >
+            <TableCell component="th" scope="row">
+              {element.serialNo}
+            </TableCell>
+            <TableCell>{element.particular}</TableCell>
+            <TableCell>{element.rate}</TableCell>
+            <TableCell>{element.quantity}</TableCell>
+            <TableCell>{element.total}</TableCell>
+            <TableCell>{element.vatTotal}</TableCell>
+          </TableRow>
+        ))}
+        <TableRow
+          key={purchaseOrder.items.length}
+         
+        >
+          <TableCell />
+          <TableCell />
+          <TableCell />
+          <TableCell />
+          <TableCell />
+      
+          <TableCell>Grand Total: {purchaseOrder.grandTotal}</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  </TableContainer>
 
-          <td width={'15%'} align='center'>{element.grandTotal}</td>
-          </tr>
-        });
-
-        return (<div className="App" style={{padding: 24, textAlign: 'start'}}>  
-  
-        <div style={headerWrapperStyle}>
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-          <div>Procurement Request #: {this.state.purchaseOrder.prNo}</div>
-          <div>Request Date: {this.state.purchaseOrder.date}</div>
-          <div>Fiscal Year: {this.state.purchaseOrder.fiscalYear}</div>
-        </div>
-  
-        <div>
-        <div>Procurement Order #: {this.state.purchaseOrder.poNumber}</div>
-          <div>Vendor: {this.state.purchaseOrder.vendor}</div>
-          <div>Department: {this.state.purchaseOrder.department}</div>
-        </div>
-        </div>
-        <br/>
-
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>SerialNo</TableCell>
-                <TableCell>Particular</TableCell>
-                <TableCell>Rate</TableCell>
-                <TableCell>Qty</TableCell>
-                <TableCell>Total</TableCell>
-                <TableCell>VAT Total</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.state.purchaseOrder.items.map((element, index) => (
-                <TableRow
-                  key={index}
-                >
-                  <TableCell component="th" scope="row">
-                    {element.serialNo}
-                  </TableCell>
-                  <TableCell>{element.particular}</TableCell>
-                  <TableCell>{element.rate}</TableCell>
-                  <TableCell>{element.quantity}</TableCell>
-                  <TableCell>{element.total}</TableCell>
-                  <TableCell>{element.vatTotal}</TableCell>
-                </TableRow>
-              ))}
-              <TableRow
-                key={this.state.purchaseOrder.items.length}
-               
-              >
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-            
-                <TableCell>Grand Total: {this.state.purchaseOrder.grandTotal}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-  
-      </div>)
-    }
-
+</div>)
 }
 
 const headerWrapperStyle = {display: 'flex', justifyContent: 'space-between'};
 
-
-export default PurchaseRequestListItem;

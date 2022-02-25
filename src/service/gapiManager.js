@@ -115,7 +115,7 @@ function pickerCallback(data) {
     selectedFileId = data.docs[0].id;
     fieldId = selectedFileId;
     cookies.set("sheetId", selectedFileId, { path: "/" });
-
+    initCallback()
   }
 }
 

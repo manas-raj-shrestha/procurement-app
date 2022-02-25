@@ -15,7 +15,7 @@ function parsePurchaseRequestsFromSheets(values) {
       serialNo: element[5],
       particular: element[6],
       quantity: element[7],
-      rate: element[8],
+      rate: element[8].replace(/\,/g, ""),
       total: element[9].replace(/\,/g, ""),
     };
 
@@ -65,7 +65,7 @@ function parsePurchaseOrderFromSheets(values) {
       serialNo: element[6],
       particular: element[7],
       quantity: element[8],
-      rate: element[9],
+      rate: element[9].replace(/\,/g, ""),
       total: element[10].replace(/\,/g, ""),
       vatTotal: element[11].replace(/\,/g, ""),
       grandTotal: element[12].replace(/\,/g, ""),

@@ -1,0 +1,27 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.form-box{
+  
+}
+
+.form-box label{
+    display: block;
+    font-size: 14px;
+    margin: 16px 0 0 16px;
+}
+
+.form-box input{
+    margin: 0 0 0 16px;
+    width: 25%;
+}
+
+.form-box textarea{
+    width: 25%;
+    margin: 0 0 0 16px;
+    
+}
+

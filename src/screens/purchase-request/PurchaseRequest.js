@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { fetchPrRequests } from "../../service/gapiManager";
 import { purchaseRequestsFormatted } from "../../SheetProcessor";
 import PurchaseRequestListItem from "../home/components/PurchaseRequestListItem";
+import { Button } from "@mui/material";
 
 var initialStatus = {
   loading: true,
@@ -13,6 +14,7 @@ var initialStatus = {
 export default function PurchaseRequest() {
   const { id } = useParams();
   const [status, setStatus] = useState(initialStatus);
+  const navigate = useNavigate();
 
   useEffect(
     () =>
@@ -28,9 +30,19 @@ export default function PurchaseRequest() {
   if(purchaseRequestsFormatted.get(id))
 
   return (
+  <div>  
     <PurchaseRequestListItem
       purchaseRequest={purchaseRequestsFormatted.get(id)}
     />
+    <div align="right">
+    <Button
+      variant="contained"
+      style={{ marginRight: 24, marginBottom: 24 }}
+      onClick={() => navigate("/purchase-order/new",{state: purchaseRequestsFormatted.get(id)} )}
+    >
+      Generate Purchase Order
+    </Button>
+  </div></div>
   );
 
   return <div/>

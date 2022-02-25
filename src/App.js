@@ -2,9 +2,12 @@ import React, { useState } from "react";
 
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import HomeScreen from "./screens/home/HomeScreen";
-import NewPrRequestScreen from "./screens/NewPrRequestScreen";
+import PurchaseOrder from "./screens/purchase-order/PurchaseOrder";
+import NewPrRequestScreen from "./screens/purchase-request/new-purchase-request/NewPrRequestScreen";
 import PurchaseRequest from "./screens/purchase-request/PurchaseRequest";
+import GoodsReceived from "./screens/goods-received/GoodsReceived";
 import { initGapis } from "./service/gapiManager";
+import NewPurchaseOrder from './screens/purchase-order/new-purchase-order/NewPurchaseOrder'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -31,11 +34,21 @@ export default class App extends React.Component {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomeScreen />} />
-          <Route path="/purchase-request" element={<NewPrRequestScreen />} />
+          <Route path="/purchase-request/new" element={<NewPrRequestScreen />} />
+          <Route path="/purchase-order/new" element={<NewPurchaseOrder />} />
           <Route
             path="/purchase-request/:id"
             element={<PurchaseRequest />}
-          ></Route>
+          />
+           <Route
+            path="/purchase-order/:id"
+            element={<PurchaseOrder />}
+          /> 
+
+          <Route
+            path="/goods-received/:id"
+            element={<GoodsReceived />}
+          /> 
         </Routes>
       </BrowserRouter>
     );
