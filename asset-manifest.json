@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/procurement-app/static/css/main.9dcca82b.css",
-    "main.js": "/procurement-app/static/js/main.290e7a75.js",
+    "main.js": "/procurement-app/static/js/main.a00869af.js",
     "static/js/787.9f8ee0e7.chunk.js": "/procurement-app/static/js/787.9f8ee0e7.chunk.js",
     "index.html": "/procurement-app/index.html",
     "main.9dcca82b.css.map": "/procurement-app/static/css/main.9dcca82b.css.map",
-    "main.290e7a75.js.map": "/procurement-app/static/js/main.290e7a75.js.map",
+    "main.a00869af.js.map": "/procurement-app/static/js/main.a00869af.js.map",
     "787.9f8ee0e7.chunk.js.map": "/procurement-app/static/js/787.9f8ee0e7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9dcca82b.css",
-    "static/js/main.290e7a75.js"
+    "static/js/main.a00869af.js"
   ]
 }
