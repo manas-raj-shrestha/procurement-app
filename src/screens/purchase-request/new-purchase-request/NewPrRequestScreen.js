@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./style.css";
-import { Button, Paper, TextField } from "@mui/material";
+import { Button, Paper, TextField , Dialog, Slide, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 
 const initialItems = {
   quantity: 0,
@@ -18,9 +18,22 @@ const initialState = {
   items: [{ ...initialItems }],
 };
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 function NewPrRequestScreen() {
   const [formValues, setFormValue] = useState(initialState);
+  const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleChange = (event) => {
     setFormValue({ ...formValues, [event.target.name]: event.target.value });
@@ -32,11 +45,12 @@ function NewPrRequestScreen() {
   };
 
   const buildItemRows = (element, index) => {
-    // console.log( event.target.value);
+  
     return (
       <div style={{ display: "flex", flexDirection: "row" }}>
         <TextField
           style={{ flex: 1, margin: 8 }}
+          disabled={true}
           name="serialNumber"
           label="Serial Number"
           type="number"
@@ -106,7 +120,8 @@ function NewPrRequestScreen() {
         resource: body,
       })
       .then((response) => {
-        alert(`New PR created`);
+        // alert(`New P(R created`);
+        handleClickOpen();
 
         setFormValue({ ...initialState });
         setLoading(false);
@@ -114,7 +129,7 @@ function NewPrRequestScreen() {
   };
 
   return (
-    <Paper style={{
+  <div> <Paper style={{
      margin: 16,
    alignItems:'center'
     
@@ -206,6 +221,27 @@ function NewPrRequestScreen() {
         </div>
       </form>
     </Paper>
+
+    <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"New Purchase Request Created!"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Check your google sheet to find the newly created purchase request.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Okay</Button>
+        
+        </DialogActions>
+      </Dialog>
+    </div>
+    
   );
 }
 

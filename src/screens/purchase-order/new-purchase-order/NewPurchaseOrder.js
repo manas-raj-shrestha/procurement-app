@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./style.css";
-import { Button, Paper, TextField } from "@mui/material";
+import { Button, Paper, TextField,  Dialog, Slide, DialogTitle, DialogContent, DialogContentText, DialogActions  } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
 const initialItems = {
@@ -18,25 +18,39 @@ const initialState = {
   requester: "",
   department: "",
   poNumber: "",
-
   vendor: "",
   items: [{ ...initialItems }],
 };
 
 function generateStateFromProps(props) {
 
-var mappedItems=   props.items.map((purchaseOrderItem)=>{
+var mappedItems= props.items.map((purchaseOrderItem)=>{
     return {...initialItems,quantity: purchaseOrderItem.quantity, rate: purchaseOrderItem.rate, serialNumber: purchaseOrderItem.serialNo, particular: purchaseOrderItem.particular}
   });
 
   return {...initialState, date: props.date, department: props.department, prNumber:props.prNo, fiscalYear: props.fiscalYear, items: mappedItems};
 }
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+
 export default function NewPurchaseOrder() {
   const { state } = useLocation();
 
   const [formValues, setFormValue] = useState(generateStateFromProps(state));
+  const [open, setOpen] = React.useState(false);
+  
   const [loading, setLoading] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleChange = (event) => {
     setFormValue({ ...formValues, [event.target.name]: event.target.value });
@@ -147,13 +161,14 @@ export default function NewPurchaseOrder() {
         resource: body,
       })
       .then((response) => {
-        alert(`New PR created`);
+        handleClickOpen();
         setFormValue({ ...initialState });
         setLoading(false);
       });
   };
 
   return (
+    <div>
     <Paper
       style={{
         margin: 16,
@@ -257,5 +272,26 @@ export default function NewPurchaseOrder() {
         </div>
       </form>
     </Paper>
+
+    <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"New Purchase Order Created!"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Check your google sheet to find the newly created purchase request.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Okay</Button>
+        
+        </DialogActions>
+      </Dialog>
+    </div>
+    
   );
 }
