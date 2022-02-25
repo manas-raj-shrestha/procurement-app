@@ -46,6 +46,7 @@ function initGapis(initializationCallback) {
         window.gapi.load("picker", { callback: onPickerApiLoad });
       }, (error) => {
         console.log('error');
+        console.log(error);
       })
     });
     
