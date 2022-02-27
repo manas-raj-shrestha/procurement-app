@@ -8,9 +8,8 @@ import Cookies from "universal-cookie";
 var clientId =
   "692551935906-7cdtb8e7dd8etp6na2hf2b2d6rdre5g9.apps.googleusercontent.com";
 
-var scope = 
-  "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file"
-;
+var scope =
+  "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file";
 var oauthToken;
 var appId = "692551935906";
 var pickerApiLoaded = false;
@@ -32,25 +31,25 @@ function initGapis(initializationCallback) {
   script.src = "https://apis.google.com/js/client.js";
 
   script.onload = () => {
-    
-    
-      window.gapi.load("client", () => {
-
-       window.gapi.client.init({
-        apiKey: developerKey,
-        clientId: clientId,
-        scope: scope,
-        discoveryDocs: DISCOVERY_DOCS
-      }).then(()=>{
-        window.gapi.load("auth", { callback: onAuthApiLoad });
-        window.gapi.load("picker", { callback: onPickerApiLoad });
-      }, (error) => {
-        console.log('error');
-        console.log(error);
-      })
+    window.gapi.load("client", () => {
+      window.gapi.client
+        .init({
+          apiKey: developerKey,
+          clientId: clientId,
+          scope: scope,
+          discoveryDocs: DISCOVERY_DOCS,
+        })
+        .then(
+          () => {
+            window.gapi.load("auth", { callback: onAuthApiLoad });
+            window.gapi.load("picker", { callback: onPickerApiLoad });
+          },
+          (error) => {
+            console.log("error");
+            console.log(error);
+          }
+        );
     });
-    
-
   };
 
   document.body.appendChild(script);
@@ -61,22 +60,33 @@ function onPickerApiLoad() {
   createPicker();
 }
 
+function loadAuthPicker(){
+      window.gapi.auth.authorize(
+        {
+          client_id: clientId,
+          scope: scope,
+          discoveryDocs: DISCOVERY_DOCS,
+          immediate: false,
+        },
+        handleAuthResult
+      );
+}
+
 function onAuthApiLoad() {
- 
-  // window.gapi.auth.checkSessionState({client_id:clientId}, (stte)=>{console.log('Callback' +stte)});
-  window.gapi.auth.authorize(
-    {
-      client_id: clientId,
-      scope: scope,
-      discoveryDocs: DISCOVERY_DOCS,
-      immediate: false,
-    },
-    handleAuthResult
-  );
+  window.gapi.auth.checkSessionState({ client_id: clientId }, (stte) => {
+    console.log(stte);
+    if (!stte) {
+      oauthToken = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
+      createPicker();
+    } else {
+      initCallback(false);
+      // loadAuthPicker();
+    }
+  });
 }
 
 function handleAuthResult(authResult) {
-  console.log('auth');
+  console.log("auth");
   if (authResult && !authResult.error) {
     oauthToken = authResult.access_token;
     createPicker();
@@ -87,7 +97,6 @@ function handleAuthResult(authResult) {
 
 function createPicker() {
   if (typeof cookies.get("sheetId") == "undefined") {
-
     if (pickerApiLoaded && oauthToken) {
       var view = new window.google.picker.View(
         window.google.picker.ViewId.SPREADSHEETS
@@ -104,11 +113,11 @@ function createPicker() {
         .build();
       picker.setVisible(true);
     }
-  } else{
+  } else {
     fieldId = cookies.get("sheetId");
-    console.log('going back');
-    initCallback()
-  };
+    console.log("going back");
+    initCallback(true);
+  }
 }
 
 function pickerCallback(data) {
@@ -116,7 +125,8 @@ function pickerCallback(data) {
     selectedFileId = data.docs[0].id;
     fieldId = selectedFileId;
     cookies.set("sheetId", selectedFileId, { path: "/" });
-    initCallback()
+
+    initCallback(true);
   }
 }
 
@@ -139,7 +149,6 @@ async function fetchOrders() {
 }
 
 async function fetchGoodsReceived() {
-
   var received = await window.gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: fieldId,
     range: "goods-received!A2:O",
@@ -148,4 +157,4 @@ async function fetchGoodsReceived() {
   parseGoodsReceivedFromSheets(received.result.values);
 }
 
-export { initGapis, fetchPrRequests,fetchOrders, fetchGoodsReceived };
+export { initGapis, fetchPrRequests, fetchOrders, fetchGoodsReceived,loadAuthPicker };

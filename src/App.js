@@ -8,12 +8,14 @@ import PurchaseRequest from "./screens/purchase-request/PurchaseRequest";
 import GoodsReceived from "./screens/goods-received/GoodsReceived";
 import { initGapis } from "./service/gapiManager";
 import NewPurchaseOrder from './screens/purchase-order/new-purchase-order/NewPurchaseOrder'
+import Login from "./screens/login/Login";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       gapiInitialized: false,
+      userLoggedIn: false
     };
   }
 
@@ -21,19 +23,27 @@ export default class App extends React.Component {
     initGapis(this.initializationCallback);
   }
 
-  initializationCallback = () => {
-    this.setState({ gapiInitialized: true });
+  initializationCallback = (loggedIn) => {
+   
+
+    if(loggedIn){
+      this.setState({ gapiInitialized: true, userLoggedIn: true });
+    }else{
+      this.setState({ gapiInitialized: true, userLoggedIn: false });
+    }
   };
 
   render() {
     
  
     if (!this.state.gapiInitialized) return null;
+    if(!this.state.userLoggedIn) return <Login/>
 
     return (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomeScreen />} />
+          {/* <Route path='/login' element={<Login/>}/> */}
           <Route path="/purchase-request/new" element={<NewPrRequestScreen />} />
           <Route path="/purchase-order/new" element={<NewPurchaseOrder />} />
           <Route
