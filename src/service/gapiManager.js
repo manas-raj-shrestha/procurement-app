@@ -45,7 +45,6 @@ function initGapis(initializationCallback) {
             window.gapi.load("picker", { callback: onPickerApiLoad });
           },
           (error) => {
-            console.log("error");
             console.log(error);
           }
         );
@@ -74,24 +73,29 @@ function loadAuthPicker(){
 
 function onAuthApiLoad() {
   window.gapi.auth.checkSessionState({ client_id: clientId }, (stte) => {
-    console.log(stte);
-    if (!stte) {
-      oauthToken = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
-      createPicker();
-    } else {
+
+    if(stte || window.gapi.auth.getToken() == null){
       initCallback(false);
-      // loadAuthPicker();
-    }
+    }else{
+      oauthToken = window.gapi.auth.getToken().access_token;
+
+      if(oauthToken  == undefined){
+        window.gapi.auth.setToken(null);
+        window.gapi.auth.signOut();
+      }
+
+      createPicker();
+      
+    } 
   });
 }
 
 function handleAuthResult(authResult) {
-  console.log("auth");
   if (authResult && !authResult.error) {
     oauthToken = authResult.access_token;
     createPicker();
   } else {
-    console.log("err " + authResult.error);
+    console.log("handleAuthResult:" + authResult.error);
   }
 }
 
